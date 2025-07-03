@@ -7,16 +7,14 @@ const initialUrl = "https://pokeapi.co/api/v2/pokemon?limit=10";
 
 const Home = () => {
   const [pokemon, setPokemon] = useState([]);
-  const [currentPageUrl, setCurrentPageUrl] = useState(initialUrl);
   const [loading, setLoading] = useState(true);
   const [morePokemon, setMorePokemon] = useState();
 
-  useEffect(() => {
-    let cancel = false
+  const fetchPokemonData = async (url, resetList = false) => {
     setLoading(true);
 
-    axios.get(currentPageUrl).then(async (res) => {
-      if (cancel) return;
+    try {
+      const res = await axios.get(url);
       const results = res.data.results;
 
       const pokemonData = await Promise.all(
@@ -29,22 +27,32 @@ const Home = () => {
           };
         })
       );
-      setPokemon((prev)=>
-        currentPageUrl === initialUrl ? pokemonData : [...prev,...pokemonData]
-      );
-      setLoading(false);
-      setMorePokemon(res.data.next)
-    });
-  }, [currentPageUrl]);
 
-  function gotoMorePokemon(){
-    setCurrentPageUrl(morePokemon)
-  }
-  if (loading) return "Loading...";
+      setPokemon((prev) =>
+        resetList ? pokemonData : [...prev, ...pokemonData]
+      );
+
+      setMorePokemon(res.data.next);
+    } catch (err) {
+      console.error("Erro ao buscar pokèmons: ", err);
+    }
+
+    setLoading(false);
+  };
+  useEffect(() => {
+    fetchPokemonData(initialUrl, true);
+  }, []);
+
+  const gotoMorePokemon = () => {
+    if (morePokemon) {
+      fetchPokemonData(morePokemon);
+    }
+  };
+  if (loading && pokemon.length === 0) return "Loading...";
   return (
     <>
       <PokemonList pokemon={pokemon} />
-      <Pagination gotoMorePokemon = {gotoMorePokemon}/>
+      {morePokemon && <Pagination gotoMorePokemon={gotoMorePokemon} />}
     </>
   );
 };
