@@ -1,0 +1,42 @@
+section{
+    display: flex;
+    justify-content: center;
+}
+.list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    max-width: 70rem;
+    justify-content: center;
+}
+
+.pokemon{
+    background-color: #B3CC57;
+    text-align: center;
+    padding: 2rem;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.image{
+    width:  10rem;
+    height: 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pokemon:hover img{
+    transition: 1s;
+    width:  100%;
+}
+
+.pokemon h3{
+    text-transform: capitalize;
+    color: black;
+    text-shadow:
+    -1px -1px 0 white,
+    2px 2px 0 #fec006;
+    
+
+}

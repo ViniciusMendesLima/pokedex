@@ -1,0 +1,21 @@
+.pagination{
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+button{
+    width: 90%;
+    text-transform: capitalize;
+    font-size: 3rem;
+    font-weight: 700;
+    color:#e93b35;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: rgba(240, 240, 240, .5);
+    transition: .5;
+}
+
+button:hover{
+    background-color: rgba(240, 240, 240, 1);
+}
