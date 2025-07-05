@@ -1,13 +1,12 @@
-import { Header } from "./components/Header"
+import { ThemeProvider } from "./context/ThemeContext"
 import { Home } from "./pages/Home"
 
 function App() {
   
   return (
-    <>
-      <Header/>
+    <ThemeProvider>
       <Home/>
-    </>
+    </ThemeProvider>
   )
 }
 

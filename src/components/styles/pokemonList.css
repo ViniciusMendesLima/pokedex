@@ -11,11 +11,29 @@ section{
 }
 
 .pokemon{
-    background-color: #B3CC57;
+    /* background-color: #B3CC57; */
     text-align: center;
     padding: 2rem;
     border-radius: 30px;
     cursor: pointer;
+}
+
+.pokemon.light {
+  background-color: #B3CC57;
+  color: black;
+    text-shadow:
+    -1px -1px 0 white,
+    2px 2px 0 #fec006;
+    
+}
+
+.pokemon.dark {
+  background-color: #6B57CC;
+  color: white;
+    text-shadow:
+    -1px -1px 0 black,
+    2px 2px 0 #0670fe;
+    
 }
 
 .image{
@@ -33,10 +51,6 @@ section{
 
 .pokemon h3{
     text-transform: capitalize;
-    color: black;
-    text-shadow:
-    -1px -1px 0 white,
-    2px 2px 0 #fec006;
     
 
 }

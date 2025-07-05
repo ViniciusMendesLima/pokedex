@@ -4,7 +4,7 @@
     margin: 2rem 0;
 }
 
-button{
+.btn-more{
     width: 90%;
     text-transform: capitalize;
     font-size: 3rem;
@@ -16,6 +16,6 @@ button{
     transition: .5;
 }
 
-button:hover{
+.btn-more:hover{
     background-color: rgba(240, 240, 240, 1);
 }

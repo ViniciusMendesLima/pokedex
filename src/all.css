@@ -21,7 +21,14 @@ img{
     --lightMode: #fff0d1;
 }
 
-body{
-    min-width: 100vh;
-    background-image: url("assets//bg-light.png");
+body.dark {
+  background-image: url("assets//bg-dark.png");
+  --text-color: #eeeeee;
 }
+
+body {
+  background-image: url("assets//bg-light.png");
+  min-width: 100vh;
+  transition: background-color 0.3s ease;
+}
+

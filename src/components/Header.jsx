@@ -1,21 +1,25 @@
-import './styles/header.css'
-import logo from '../assets/logo.png';
-import darkTema from '../assets/dark.png'
+import "./styles/header.css";
+import logo from "../assets/logo.png";
+import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
+import darkTema from "../assets/dark.png";
+import lightTema from "../assets/light.png";
 const Header = () => {
-  const darkTema2= 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/337.png'
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
-  // https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/338.png
+  const icon = theme === "light" ? darkTema : lightTema;
   return (
     <header>
-        <img className='logo' src={logo} alt="Logo Pokedex" />
-        <img className='tema' src={darkTema2} alt="Tema Escuro" 
-        onError={(e)=>{
-          e.target.onerror = null;
-          e.target.src = darkTema;
-        }} />
+      <img className="logo" src={logo} alt="Logo Pokedex" />
 
+      <img
+        onClick={toggleTheme}
+        className={`tema ${theme}`}
+        src={icon}
+        alt="T"
+      />
     </header>
-  )
-}
+  );
+};
 
-export {Header}
+export { Header };
