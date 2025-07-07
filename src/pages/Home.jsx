@@ -1,6 +1,6 @@
 import { PokemonList } from '../components/PokemonList';
 import  Pagination  from '../components/Pagination';
-import { usePokemonData } from '../hooks/usePokemonData';
+import { usePokemonData } from '../services/usePokemonData';
 import { Header } from '../components/Header';
 
 const Home = () => {

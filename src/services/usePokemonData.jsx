@@ -14,10 +14,15 @@ export function usePokemonData() {
     try {
       const res = await axios.get(url);
       const results = res.data.results;
+      console.log(url);
+      
 
       const detailedPokemon = await Promise.all(
         results.map(async (p) => {
           const response = await axios.get(p.url);
+          console.log(p.name);
+          
+          
           return {
             name: p.name,
             image: response.data.sprites.other["official-artwork"].front_default,
