@@ -5,7 +5,6 @@ const Header = () => {
   return (
     <header>
       <img className="logo" src={logo} alt="Logo Pokedex" />
-
       <ThemeToggle />
     </header>
   );

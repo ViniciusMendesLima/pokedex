@@ -1,14 +1,59 @@
+import { useLocation } from "react-router-dom";
 import { Header } from "../components/Header";
-import { usePokemonData } from "../services/usePokemonData";
+import "./styles/pokemonDetail.css";
+import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
 const PokemonDetail = () => {
-  const pokemon = usePokemonData()
-  console.log(pokemon);
+  const {
+    state: { pokemon },
+  } = useLocation();
+  const { theme } = useContext(ThemeContext);
+  console.log(pokemon.moves);
+  
 
   return (
     <>
       <Header />
-      <div>PokemonDetail</div>
+      <div className="container">
+        <div className={`detail pokemon ${theme}`}>
+          <h1>
+            Detalhes do <span>{pokemon.name}</span>
+          </h1>
+          <div className="pokemonData ">
+            <div className="imagePokemon">
+              <img src={pokemon.image} alt={pokemon.name} />
+            </div>
+            <div className="characteristics">
+              <h2>Tipo </h2>
+              <ul className={`displyLine ${theme}`}>
+                {pokemon.types.map((type) => (
+                  <li key={type}>{type}</li>
+                ))}
+              </ul>
+              <h2>Movimentos</h2>
+              <ul className={`displyLine ${theme}`}>
+                {pokemon.moves.map((move) => (
+                  <li key={move}>{move}</li>
+                ))}
+              </ul>
+              <h2>Habilidades</h2>
+              <ul className={`displyLine ${theme} abilitiesPokemon`}>
+                {pokemon.abilities.map((ability) => (
+                  <li key={ability.name}>
+                    <h3>
+                      {ability.name}
+                    </h3>
+                    <p>
+                      {ability.descritpion}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

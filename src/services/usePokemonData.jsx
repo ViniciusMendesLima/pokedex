@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-const initialUrl = 'https://pokeapi.co/api/v2/pokemon?limit=10';
+const initialUrl = "https://pokeapi.co/api/v2/pokemon?limit=10";
 
 export function usePokemonData() {
   const [pokemon, setPokemon] = useState([]);
@@ -14,23 +14,44 @@ export function usePokemonData() {
     try {
       const res = await axios.get(url);
       const results = res.data.results;
-      console.log(url);
-      
 
       const detailedPokemon = await Promise.all(
         results.map(async (p) => {
           const response = await axios.get(p.url);
-          console.log(p.name);
-          
-          
+
           return {
             name: p.name,
-            image: response.data.sprites.other["official-artwork"].front_default,
+            image:
+              response.data.sprites.other["official-artwork"].front_default,
+            types: response.data.types.map((t) => t.type.name),
+            moves: response.data.moves.slice().map((m) => m.move.name),
+            abilities: await Promise.all(
+              response.data.abilities.map(async (a) => {
+                const abilityRes = await axios.get(a.ability.url);
+                const portugueseDescription =
+                  abilityRes.data.effect_entries.find(
+                    (e) => e.language.name === "pt"
+                  );
+
+                const englishDescription = abilityRes.data.effect_entries.find(
+                  (e) => e.language.name === "en"
+                );
+
+                return {
+                  name: a.ability.name,
+                  descritpion: portugueseDescription
+                    ? portugueseDescription.effect
+                    : englishDescription
+                    ? englishDescription.effect
+                    : "Descrição não disponivel",
+                };
+              })
+            ),
           };
         })
       );
 
-      setPokemon(prev =>
+      setPokemon((prev) =>
         resetList ? detailedPokemon : [...prev, ...detailedPokemon]
       );
 

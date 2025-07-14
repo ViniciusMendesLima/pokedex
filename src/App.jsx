@@ -1,4 +1,3 @@
-import { PokemonList } from "./components/PokemonList"
 import { ThemeProvider } from "./context/ThemeContext"
 import { Home } from "./pages/Home"
 import { PokemonDetail } from "./pages/PokemonDetail"
