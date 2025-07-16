@@ -1,19 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { usePokemonData } from "../services/usePokemonData";
 const typesPokemons = "https://pokeapi.co/api/v2/type/";
 
 const SelectTypesPokemon = ({onTypeSelected}) => {
   const [types, setTypes] = useState([]);
-  const [selectedType, setSelectedType] = useState("");
-
-  const fetchPokemonType = async (url) => {
-    const res = await axios.get(url);
-    setTypes(res.data.results);
-  };
+  const [selectedType, setSelectedType] = useState("Todos");
 
   useEffect(() => {
-    fetchPokemonType(typesPokemons);
+    async function fetchTypes() {
+      const res = await axios.get(typesPokemons)
+      setTypes(res.data.results)
+    }
+    fetchTypes();
   }, []);
 
   const handleTypeChange = (e) => {
@@ -23,9 +21,6 @@ const SelectTypesPokemon = ({onTypeSelected}) => {
       onTypeSelected(type);
     }
   };
-
-  usePokemonData(selectedType);
-  
 
   return (
     <>

@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const initialUrl = "https://pokeapi.co/api/v2/pokemon?limit=10";
+export function usePokemonData() {
+  const initialUrl = "https://pokeapi.co/api/v2/pokemon?limit=10";
+  console.log('Tudo:' , initialUrl);
 
-export function usePokemonData(selectedType = null) {
   const [pokemon, setPokemon] = useState([]);
   const [loading, setLoading] = useState(true);
   const [nextPageUrl, setNextPageUrl] = useState();
-  console.log('data: ', selectedType);
   
   const fetchPokemonData = async (url, resetList = false) => {
     setLoading(true);
