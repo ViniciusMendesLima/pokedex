@@ -9,7 +9,6 @@ const PokemonDetail = () => {
     state: { pokemon },
   } = useLocation();
   const { theme } = useContext(ThemeContext);
-  console.log(pokemon.moves);
   
 
   return (
@@ -32,7 +31,7 @@ const PokemonDetail = () => {
                 ))}
               </ul>
               <h2>Movimentos</h2>
-              <ul className={`displyLine ${theme}`}>
+              <ul className={`displyLine ${theme} movesPokemon`}>
                 {pokemon.moves.map((move) => (
                   <li key={move}>{move}</li>
                 ))}
