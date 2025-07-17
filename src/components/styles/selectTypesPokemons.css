@@ -1,0 +1,15 @@
+.type-selector {
+  margin-left: 30px;
+  font-size: 1rem;
+  border-radius: 30px;
+  padding: 0 10px;
+}
+
+.type-selector.light {
+  background-color: hsl(43, 100%, 91%);
+}
+
+.type-selector.dark {
+  background-color: hsl(30, 5%, 15%);
+  color: wheat;
+}

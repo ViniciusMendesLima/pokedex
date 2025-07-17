@@ -1,15 +1,28 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { usePokemonData } from "../services/usePokemonData";
 const typesPokemons = "https://pokeapi.co/api/v2/type/";
+import "./styles/selectTypesPokemons.css";
+import { ThemeContext } from "../context/ThemeContext";
 
-const SelectTypesPokemon = ({onTypeSelected}) => {
+const SelectTypesPokemon = ({ onTypeSelected }) => {
+  const { theme } = useContext(ThemeContext);
+
   const [types, setTypes] = useState([]);
   const [selectedType, setSelectedType] = useState("Todos");
 
   useEffect(() => {
     async function fetchTypes() {
-      const res = await axios.get(typesPokemons)
-      setTypes(res.data.results)
+      try {
+        const res = await axios.get(typesPokemons);
+        setTypes(
+          res.data.results.filter(
+            (t) => t.name !== "shadow" && t.name !== "unknown"
+          )
+        );
+      } catch (error) {
+        console.error("Erro ao buscar tipos:", error);
+      }
     }
     fetchTypes();
   }, []);
@@ -21,10 +34,15 @@ const SelectTypesPokemon = ({onTypeSelected}) => {
       onTypeSelected(type);
     }
   };
+  usePokemonData(selectedType);
 
   return (
     <>
-      <select value={selectedType} onChange={handleTypeChange}>
+      <select
+        className={`type-selector ${theme}`}
+        value={selectedType}
+        onChange={handleTypeChange}
+      >
         <option value="Todos">Todos</option>
         {types.map((t) => (
           <option key={t.name} value={t.name}>

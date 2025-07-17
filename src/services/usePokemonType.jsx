@@ -1,79 +1,124 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+// import { useState, useEffect } from "react";
+// import axios from "axios";
 
+// export function usePokemonData(type) {
+//   const initialUrl =
+//     type && type !== "Todos"
+//       ? `https://pokeapi.co/api/v2/type/${type}` // Busca por tipo específico
+//       : "https://pokeapi.co/api/v2/pokemon?limit=10"; // Busca geral
+//   // console.log('Tudo:' , initialUrl);
 
+//   const [pokemon, setPokemon] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [nextPageUrl, setNextPageUrl] = useState();
+//   const [error, setError] = useState(null);
 
-export function usePokemonType(initialUrl = null) {
-    console.log('type:' , initialUrl);
-    
-  const [pokemon, setPokemon] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [nextPageUrl, setNextPageUrl] = useState();
-  
-  const fetchPokemonData = async (url, resetList = false) => {
-    setLoading(true);
+//   const fetchPokemonData = async (url, resetList = false) => {
+//     setLoading(true);
+//     setError(null);
 
-    try {
-      const res = await axios.get(url);
-      const results = res.data.results;      
+//     try {
+//       const res = await axios.get(url);
 
-      const detailedPokemon = await Promise.all(
-        results.map(async (p) => {
-          const response = await axios.get(p.url);
+//       let pokemonList = [];
+
+//       if (type && type !== "Todos") {
+//         pokemonList = res.data.pokemon.map((item) => item.pokemon);
+//       } else {
+//         pokemonList = res.data.results;
+//       }
+
+//       const detailedPokemon = await Promise.all(
+//         pokemonList.map(async (p) => {
+//           const response = await axios.get(p.url);
+//           let speciesRes = null;
+
+//           // Extrai o nome base e remove tudo após o primeiro hífen
+//           const baseName = p.name.replace(/-.*$/, '');
           
-          return {
-            name: p.name,
-            image:
-              response.data.sprites.other["official-artwork"].front_default,
-            types: response.data.types.map((t) => t.type.name),
-            moves: response.data.moves.map((m) => m.move.name),
-            abilities: await Promise.all(
-              response.data.abilities.map(async (a) => {
-                const abilityRes = await axios.get(a.ability.url);
-                const portugueseDescription =
-                  abilityRes.data.effect_entries.find(
-                    (e) => e.language.name === "pt"
-                  );
+//           // Estratégias de fallback em ordem de prioridade
+//           const speciesAttempts = [
+//             () => axios.get(`https://pokeapi.co/api/v2/pokemon-species/${response.data.id}`),
+//             () => axios.get(`https://pokeapi.co/api/v2/pokemon-species/${baseName}`),
+//             () => axios.get(response.data.species.url) // Usa a URL de species diretamente do Pokémon
+//           ];
 
-                const englishDescription = abilityRes.data.effect_entries.find(
-                  (e) => e.language.name === "en"
-                );
+//           // Tenta cada estratégia até encontrar uma que funcione
+//           for (const attempt of speciesAttempts) {
+//             try {
+//               speciesRes = await attempt();
+//               break; // Sai do loop se conseguir
+//             } catch (e) {
+//               continue; // Tenta a próxima estratégia
+//             }
+//           }
 
-                return {
-                  name: a.ability.name,
-                  descritpion: portugueseDescription
-                    ? portugueseDescription.effect
-                    : englishDescription
-                    ? englishDescription.effect
-                    : "Descrição não disponivel",
-                };
-              })
-            ),
-          };
-        })
-      );
+//           if (!speciesRes) {
+//             console.warn(`⚠️ Species not found for: ${p.name} (ID: ${response.data.id})`);
+//           }
+//           return {
+//             name: p.name,
+//             image:
+//               response.data.sprites.other["official-artwork"].front_default,
+//             types: response.data.types.map((t) => t.type.name),
+//             moves: response.data.moves.map((m) => m.move.name),
+//             abilities: await Promise.all(
+//               response.data.abilities.map(async (a) => {
+//                 const abilityRes = await axios.get(a.ability.url);
+//                 const portugueseDescription =
+//                   abilityRes.data.effect_entries.find(
+//                     (e) => e.language.name === "pt"
+//                   );
 
-      setPokemon((prev) =>
-        resetList ? detailedPokemon : [...prev, ...detailedPokemon]
-      );
+//                 const englishDescription = abilityRes.data.effect_entries.find(
+//                   (e) => e.language.name === "en"
+//                 );
 
-      setNextPageUrl(res.data.next);
-    } catch (err) {
-      console.error("Erro ao buscar pokémons:", err);
-    }
+//                 return {
+//                   name: a.ability.name,
+//                   descritpion: portugueseDescription
+//                     ? portugueseDescription.effect
+//                     : englishDescription
+//                     ? englishDescription.effect
+//                     : "Descrição não disponivel",
+//                 };
+//               })
+//             ),
+//             color: speciesRes?.data?.color?.name || "unknown",
+//           };
+//         })
+//       );
 
-    setLoading(false);
-  };
+//       const filteredPokemon = detailedPokemon.filter((p) => p !== null);
 
-  useEffect(() => {
-    fetchPokemonData(initialUrl, true);
-  }, []);
+//       setPokemon((prev) =>
+//         resetList ? filteredPokemon : [...prev, ...filteredPokemon]
+//       );
 
-  const fetchNextPage = () => {
-    if (nextPageUrl) {
-      fetchPokemonData(nextPageUrl);
-    }
-  };
+//       if (!type || type === "todos") {
+//         setNextPageUrl(res.data.next);
+//       }
+//     } catch (err) {
+//       console.error("Erro ao buscar pokémons:", err);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-  return { pokemon, loading, nextPageUrl, fetchNextPage };
-}
+//   useEffect(() => {
+//     if (type === "Todos") {
+//       fetchPokemonData("https://pokeapi.co/api/v2/pokemon?limit=10", true);
+//     } else {
+//       fetchPokemonData(initialUrl, true);
+//     }
+//     console.log("✅ Resetando lista - Tipo mudou:", type);
+//   }, [type]);
+
+//   const fetchNextPage = () => {
+//     if (nextPageUrl) {
+//       fetchPokemonData(nextPageUrl);
+//     }
+//   };
+
+//   return { pokemon, loading, nextPageUrl, fetchNextPage };
+// }

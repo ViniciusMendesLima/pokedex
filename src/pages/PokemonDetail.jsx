@@ -9,13 +9,12 @@ const PokemonDetail = () => {
     state: { pokemon },
   } = useLocation();
   const { theme } = useContext(ThemeContext);
-  
 
   return (
     <>
       <Header />
       <div className="container">
-        <div className={`detail pokemon ${theme}`}>
+        <div style={{ "--bg-color": pokemon.color}}  className={`detail pokemon ${theme}`}>
           <h1>
             Detalhes do <span>{pokemon.name}</span>
           </h1>
@@ -44,7 +43,7 @@ const PokemonDetail = () => {
                       {ability.name}
                     </h3>
                     <p>
-                      {ability.descritpion}
+                      {ability.description}
                     </p>
                   </li>
                 ))}
