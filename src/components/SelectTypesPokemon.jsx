@@ -15,11 +15,10 @@ const SelectTypesPokemon = ({ onTypeSelected }) => {
     async function fetchTypes() {
       try {
         const res = await axios.get(typesPokemons);
-        setTypes(
-          res.data.results.filter(
-            (t) => t.name !== "shadow" && t.name !== "unknown"
-          )
+        const filteredTypes = res.data.results.filter(
+          (t) => t.name !== "shadow" && t.name !== "unknown"
         );
+        setTypes(filteredTypes);
       } catch (error) {
         console.error("Erro ao buscar tipos:", error);
       }

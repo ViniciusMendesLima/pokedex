@@ -4,9 +4,8 @@
 // export function usePokemonData(type) {
 //   const initialUrl =
 //     type && type !== "Todos"
-//       ? `https://pokeapi.co/api/v2/type/${type}` // Busca por tipo específico
-//       : "https://pokeapi.co/api/v2/pokemon?limit=10"; // Busca geral
-//   // console.log('Tudo:' , initialUrl);
+//       ? `https://pokeapi.co/api/v2/type/${type}`
+//       : "https://pokeapi.co/api/v2/pokemon?limit=10";
 
 //   const [pokemon, setPokemon] = useState([]);
 //   const [loading, setLoading] = useState(true);
@@ -20,105 +19,117 @@
 //     try {
 //       const res = await axios.get(url);
 
-//       let pokemonList = [];
-
-//       if (type && type !== "Todos") {
-//         pokemonList = res.data.pokemon.map((item) => item.pokemon);
-//       } else {
-//         pokemonList = res.data.results;
-//       }
+//       let pokemonList =
+//         type && type !== "Todos"
+//           ? res.data.pokemon.map((item) => item.pokemon)
+//           : res.data.results;
 
 //       const detailedPokemon = await Promise.all(
 //         pokemonList.map(async (p) => {
-//           const response = await axios.get(p.url);
-//           let speciesRes = null;
+//           try {
+//             const response = await axios.get(p.url);
 
-//           // Extrai o nome base e remove tudo após o primeiro hífen
-//           const baseName = p.name.replace(/-.*$/, '');
-          
-//           // Estratégias de fallback em ordem de prioridade
-//           const speciesAttempts = [
-//             () => axios.get(`https://pokeapi.co/api/v2/pokemon-species/${response.data.id}`),
-//             () => axios.get(`https://pokeapi.co/api/v2/pokemon-species/${baseName}`),
-//             () => axios.get(response.data.species.url) // Usa a URL de species diretamente do Pokémon
-//           ];
-
-//           // Tenta cada estratégia até encontrar uma que funcione
-//           for (const attempt of speciesAttempts) {
+//             // Estratégia para obter species data
+//             let speciesRes;
 //             try {
-//               speciesRes = await attempt();
-//               break; // Sai do loop se conseguir
-//             } catch (e) {
-//               continue; // Tenta a próxima estratégia
+//               speciesRes = await axios.get(response.data.species.url);
+//             } catch {
+//               // Fallback: tenta pelo nome base
+//               const baseName = p.name.split("-")[0];
+//               try {
+//                 speciesRes = await axios.get(
+//                   `https://pokeapi.co/api/v2/pokemon-species/${baseName}`
+//                 );
+//               } catch {
+//                 console.warn(`Species fallback failed for ${p.name}`);
+//               }
 //             }
-//           }
 
-//           if (!speciesRes) {
-//             console.warn(`⚠️ Species not found for: ${p.name} (ID: ${response.data.id})`);
-//           }
-//           return {
-//             name: p.name,
-//             image:
-//               response.data.sprites.other["official-artwork"].front_default,
-//             types: response.data.types.map((t) => t.type.name),
-//             moves: response.data.moves.map((m) => m.move.name),
-//             abilities: await Promise.all(
+//             // Processa habilidades
+//             const abilities = await Promise.all(
 //               response.data.abilities.map(async (a) => {
-//                 const abilityRes = await axios.get(a.ability.url);
-//                 const portugueseDescription =
-//                   abilityRes.data.effect_entries.find(
-//                     (e) => e.language.name === "pt"
+//                 try {
+//                   const abilityRes = await axios.get(a.ability.url);
+//                   const ptDesc =
+//                     abilityRes.data.effect_entries?.find(
+//                       (e) => e.language.name === "pt"
+//                     ) ||
+//                     abilityRes.data.flavor_text_entries?.find(
+//                       (e) => e.language.name === "pt"
+//                     );
+
+//                   const enDesc = abilityRes.data.effect_entries?.find(
+//                     (e) => e.language.name === "en"
 //                   );
 
-//                 const englishDescription = abilityRes.data.effect_entries.find(
-//                   (e) => e.language.name === "en"
-//                 );
-
-//                 return {
-//                   name: a.ability.name,
-//                   descritpion: portugueseDescription
-//                     ? portugueseDescription.effect
-//                     : englishDescription
-//                     ? englishDescription.effect
-//                     : "Descrição não disponivel",
-//                 };
+//                   return {
+//                     name: a.ability.name,
+//                     description: ptDesc
+//                       ? ptDesc.effect || ptDesc.flavor_text
+//                       : enDesc
+//                       ? enDesc.effect
+//                       : "Descrição não disponível",
+//                   };
+//                 } catch {
+//                   return {
+//                     name: a.ability.name,
+//                     description: "Descrição não disponível",
+//                   };
+//                 }
 //               })
-//             ),
-//             color: speciesRes?.data?.color?.name || "unknown",
-//           };
+//             );
+
+//             return {
+//               name: p.name,
+//               id: response.data.id,
+//               image:
+//                 response.data.sprites.other["official-artwork"].front_default,
+//               types: response.data.types.map((t) => t.type.name),
+//               moves: response.data.moves.map((m) => m.move.name),
+//               abilities,
+//               color: speciesRes?.data?.color?.name || "unknown",
+//             };
+//           } catch (err) {
+//             console.error(`Error processing ${p.name}:`, err);
+//             return null;
+//           }
 //         })
 //       );
 
-//       const filteredPokemon = detailedPokemon.filter((p) => p !== null);
+//       // console.log("➡️ Adicionando pokémons:", detailedPokemon.map(p => p?.name));
 
 //       setPokemon((prev) =>
-//         resetList ? filteredPokemon : [...prev, ...filteredPokemon]
+//         resetList
+//           ? detailedPokemon.filter((p) => p !== null)
+//           : [...prev, ...detailedPokemon.filter((p) => p !== null)]
 //       );
 
-//       if (!type || type === "todos") {
+//       if (!type || type === "Todos") {
 //         setNextPageUrl(res.data.next);
 //       }
 //     } catch (err) {
 //       console.error("Erro ao buscar pokémons:", err);
+//       setError("Falha ao carregar os dados. Tente novamente.");
 //     } finally {
 //       setLoading(false);
 //     }
 //   };
 
 //   useEffect(() => {
-//     if (type === "Todos") {
-//       fetchPokemonData("https://pokeapi.co/api/v2/pokemon?limit=10", true);
-//     } else {
-//       fetchPokemonData(initialUrl, true);
-//     }
-//     console.log("✅ Resetando lista - Tipo mudou:", type);
+//     //  console.log("✅ Tipo alterado - Resetando lista. Tipo atual:", type);
+//     fetchPokemonData(
+//       type === "Todos"
+//         ? "https://pokeapi.co/api/v2/pokemon?limit=10"
+//         : initialUrl,
+//       true
+//     );
 //   }, [type]);
 
 //   const fetchNextPage = () => {
-//     if (nextPageUrl) {
-//       fetchPokemonData(nextPageUrl);
-//     }
+//     if (loading || !nextPageUrl) return;
+//     console.log("➡️ Próxima página:", nextPageUrl);
+//     fetchPokemonData(nextPageUrl);
 //   };
 
-//   return { pokemon, loading, nextPageUrl, fetchNextPage };
+//   return { pokemon, loading, error, nextPageUrl, fetchNextPage };
 // }
