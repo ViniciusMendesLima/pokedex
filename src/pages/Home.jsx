@@ -8,6 +8,7 @@ import { SelectTypesPokemon } from '../components/SelectTypesPokemon';
 const Home = () => {
   const [selectedType, setSelectedType] = useState("Todos");
   const { pokemon, loading, error, nextPageUrl, fetchNextPage } = usePokemonData(selectedType);
+
   
 
   if (loading && pokemon.length === 0) return <p>Carregando...</p>;

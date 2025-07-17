@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Header } from "../components/Header";
 import "./styles/pokemonDetail.css";
 import { useContext } from "react";
@@ -13,8 +13,20 @@ const PokemonDetail = () => {
   return (
     <>
       <Header />
+      <Link to="/">
+        <button
+          style={{ "--bg-color": pokemon.color }}
+          className={`btn-back ${theme}`}
+        >
+          {" "}
+          Voltar
+        </button>
+      </Link>
       <div className="container">
-        <div style={{ "--bg-color": pokemon.color}}  className={`detail pokemon ${theme}`}>
+        <div
+          style={{ "--bg-color": pokemon.color }}
+          className={`detail pokemon ${theme}`}
+        >
           <h1>
             Detalhes do <span>{pokemon.name}</span>
           </h1>
@@ -39,12 +51,8 @@ const PokemonDetail = () => {
               <ul className={`displyLine ${theme} abilitiesPokemon`}>
                 {pokemon.abilities.map((ability) => (
                   <li key={ability.name}>
-                    <h3>
-                      {ability.name}
-                    </h3>
-                    <p>
-                      {ability.description}
-                    </p>
+                    <h3>{ability.name}</h3>
+                    <p>{ability.description}</p>
                   </li>
                 ))}
               </ul>
