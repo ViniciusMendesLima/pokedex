@@ -1,7 +1,4 @@
-// src/services/usePokemonData.js
 import { useState, useEffect, useCallback } from "react";
-
-
 import axios from "axios";
 import { getDetailedPokemonList } from "../utils/pokemonDetails";
 import { getInitialUrl, getPokemonListFromResponse } from "../utils/urlHepers";
@@ -36,12 +33,24 @@ export function usePokemonData(type) {
     } finally {
       setLoading(false);
     }
-  },[type]);
+  }, [type]);
 
-useEffect(() => {
-  const url = getInitialUrl(type);
-  fetchPokemonData(url, true);
-}, [type, fetchPokemonData]);
+  useEffect(() => {
+    let isMounted = true;
+    
+    const fetchData = async () => {
+      const url = getInitialUrl(type);
+      await fetchPokemonData(url, true);
+    };
+
+    if (isMounted) {
+      fetchData();
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [type, fetchPokemonData]);
 
   const fetchNextPage = () => {
     if (loading || !nextPageUrl) return;
@@ -50,3 +59,5 @@ useEffect(() => {
 
   return { pokemon, loading, error, nextPageUrl, fetchNextPage };
 }
+
+export default usePokemonData;

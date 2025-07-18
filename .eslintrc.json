@@ -1,0 +1,85 @@
+// {
+//   "env": {
+//     "browser": true,
+//     "es2021": true,
+//     "node": true,
+//     "jest": true,
+//     "jest/globals": true
+//   },
+//   "extends": [
+//     "eslint:recommended",
+//     "plugin:react/recommended",
+//     "plugin:jest/recommended",
+//     "plugin:jest/style"
+//   ],
+//   "parserOptions": {
+//     "ecmaFeatures": {
+//       "jsx": true
+//     },
+//     "ecmaVersion": 2021,
+//     "sourceType": "module"
+//   },
+//   "plugins": ["react", "jest"],
+//   "rules": {
+//     "react/react-in-jsx-scope": "off",
+//     "react/prop-types": "off",
+//     "jest/no-disabled-tests": "warn",
+//     "jest/no-focused-tests": "error",
+//     "jest/no-identical-title": "error",
+//     "jest/prefer-to-have-length": "warn",
+//     "jest/valid-expect": "error"
+//   },
+//   "settings": {
+//     "react": {
+//       "version": "detect"
+//     }
+//   }
+// }
+
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:jest/recommended",
+    "plugin:jest/style"
+  ],
+  "plugins": ["react", "jest"],
+  "overrides": [
+    {
+      "files": ["**/*.test.js", "**/*.test.jsx", "**/*.spec.js", "**/*.spec.jsx"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        // regras específicas para testes, se quiser
+      }
+    }
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2021,
+    "sourceType": "module"
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}

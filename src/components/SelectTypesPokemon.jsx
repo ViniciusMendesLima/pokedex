@@ -1,3 +1,4 @@
+import React from "react";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { usePokemonData } from "../services/usePokemonData";
@@ -10,11 +11,13 @@ const SelectTypesPokemon = ({ onTypeSelected }) => {
 
   const [types, setTypes] = useState([]);
   const [selectedType, setSelectedType] = useState("Todos");
+  
 
   useEffect(() => {
     async function fetchTypes() {
       try {
         const res = await axios.get(typesPokemons);
+        
         const filteredTypes = res.data.results.filter(
           (t) => t.name !== "shadow" && t.name !== "unknown"
         );
@@ -25,16 +28,19 @@ const SelectTypesPokemon = ({ onTypeSelected }) => {
     }
     fetchTypes();
   }, []);
-
+  
   const handleTypeChange = (e) => {
     const type = e.target.value;
     setSelectedType(type);
     if (onTypeSelected) {
       onTypeSelected(type);
     }
+    console.log();
+    
   };
+  
   usePokemonData(selectedType);
-
+  
   return (
     <>
       <select
