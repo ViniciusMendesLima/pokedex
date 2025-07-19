@@ -1,9 +1,10 @@
 import { useContext } from "react";
-import "./styles/pokemonList.css";
+import "./styles/pokemonCard.css";
+import arrow from "../assets/arrow-up-light.png"
 import { ThemeContext } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
 
-export function PokemonList({ pokemon }) {
+export function PokemonCard({ pokemon }) {
   const { theme } = useContext(ThemeContext);
 
   return (
@@ -25,6 +26,10 @@ export function PokemonList({ pokemon }) {
             ))
           )}
         </div>
+        <button className={`btn-scroll ${theme}`} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <img src={arrow} alt="Seta Cima" />
+        </button>
+
       </section>
     </>
   );

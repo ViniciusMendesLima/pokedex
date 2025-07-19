@@ -35,7 +35,6 @@ const SelectTypesPokemon = ({ onTypeSelected }) => {
     if (onTypeSelected) {
       onTypeSelected(type);
     }
-    console.log();
     
   };
   

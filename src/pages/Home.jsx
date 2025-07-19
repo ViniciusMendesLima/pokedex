@@ -1,4 +1,4 @@
-import { PokemonList } from '../components/PokemonList';
+import { PokemonCard } from '../components/PokemonCard';
 import  Pagination  from '../components/Pagination';
 import { usePokemonData } from '../services/usePokemonData';
 import { Header } from '../components/Header';
@@ -22,7 +22,7 @@ const Home = () => {
       <Header />
       <SelectTypesPokemon onTypeSelected={setSelectedType} />
        {loading && pokemon.length > 0 && <p className={`loading ${theme}`}>Carregando novo tipo...</p>}
-      <PokemonList pokemon={pokemon} />
+      <PokemonCard pokemon={pokemon} />
       {selectedType === "Todos" && nextPageUrl && (
         <Pagination gotoMorePokemon={fetchNextPage} />
       )}

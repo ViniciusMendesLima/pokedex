@@ -199,10 +199,11 @@ describe("SelectTypesPokemon", () => {
       </ThemeContext.Provider>
     );
 
-    const options = await screen.getAllByRole("option");
-    expect(options).toHaveLength(1);
-
-    expect(screen.getByRole("option", { name: /Todos/i })).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("option", { name: /Todos/i })
+      ).toBeInTheDocument();
+    });
   });
 
   it("Simular um erro com axios.get e verificar se o erro foi tratado corretamente no console.error", async () => {

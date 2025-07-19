@@ -3,13 +3,15 @@ import { Header } from "../components/Header";
 import "./styles/pokemonDetail.css";
 import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
+import useScrollToTop from "../utils/scrollToTop";
 
 const PokemonDetail = () => {
   const {
     state: { pokemon },
   } = useLocation();
   const { theme } = useContext(ThemeContext);
-
+  useScrollToTop();
+  
   return (
     <>
       <Header />
