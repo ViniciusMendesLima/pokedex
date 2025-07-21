@@ -12,14 +12,14 @@ section {
   bottom: 6.5rem;
   cursor: pointer;
   max-width: 5.5rem;
-  transition: .5s;
+  transition: 0.5s;
 }
 
-.btn-scroll.dark:hover{
+.btn-scroll.dark:hover {
   border: 1px solid var(--lightMode);
 }
 
-.btn-scroll.light:hover{
+.btn-scroll.light:hover {
   border: 1px solid var(--darkMode);
 }
 .list {
@@ -74,3 +74,33 @@ section {
 .pokemon h3 {
   text-transform: capitalize;
 }
+
+@media (max-width: 1250px) {
+  .list {
+    max-width: 58rem;
+  }
+}
+
+@media (max-width: 990px) {
+  .list {
+    max-width: 43rem;
+  }
+}
+
+@media (max-width: 730px) {
+  .list {
+    max-width: 28rem;
+  }
+
+  .btn-more {
+    width: 60%;
+  }
+}
+
+@media (max-width: 550px){
+  section{
+    justify-content: stretch;
+    margin-top: 10px;
+  }
+}
+

@@ -25,3 +25,10 @@ header{
 .tema.dark:hover {
   background-color: var(--lightMode);
 }
+
+@media(max-width: 620px){
+  header{
+
+    max-width: 90vw;
+}
+}

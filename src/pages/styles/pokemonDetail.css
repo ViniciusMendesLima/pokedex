@@ -19,7 +19,7 @@
   inset: 0;
   background-color: var(--bg-color);
   opacity: 0.3;
-  z-index: -1; 
+  z-index: -1;
 }
 
 .container {
@@ -110,4 +110,27 @@ h1 span {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+@media (max-width: 1440px) {
+  .detail {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 620px) {
+  .pokemonData {
+    flex-direction: column;
+  }
+
+  .imagePokemon img {
+    max-width: 60%;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+
+  .characteristics {
+    margin-top: 0;
+  }
 }
