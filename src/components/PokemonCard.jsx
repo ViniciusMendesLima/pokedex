@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import "./styles/pokemonCard.css";
-import arrow from "../assets/arrow-up-light.png"
+import arrow from "../assets/arrow-up.png"
 import { ThemeContext } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
 
