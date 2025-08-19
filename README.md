@@ -121,7 +121,14 @@ cd pokedex
 ```bash
 npm install
 ```
-### 4. Execute o projeto
+### 4. Remova o base do vite.config.js
+
+```bash
+
+   remova codigo-> base: '/pokedex/',
+
+```
+### 5. Execute o projeto
 ```bash
 npm run dev
 ```
