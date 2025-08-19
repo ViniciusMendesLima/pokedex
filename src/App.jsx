@@ -1,18 +1,18 @@
 import { ThemeProvider } from "./context/ThemeContext"
 import { Home } from "./pages/Home"
 import { PokemonDetail } from "./pages/PokemonDetail"
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   
   return (
 <ThemeProvider>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/pokemon/:name" element={<PokemonDetail />} />
+          <Route path="pokemon/:name" element={<PokemonDetail />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </ThemeProvider>
   )
 }
